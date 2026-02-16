@@ -120,7 +120,7 @@ class CollagenFiberGridModel:
                     'y': y,
                     'vx': 0,
                     'vy': 0,
-                    'fixed': j == 0 or j == self.num_nodes_per_fiber - 1,  # Fix topmost and bottommost nodes
+                    'fixed': False,  # Vertical fiber nodes are not fixed
                     'original_x': x,
                     'original_y': y,
                     'h_fiber_idx': None,
@@ -415,7 +415,7 @@ class CollagenFiberGridModel:
         self.ax.set_aspect('equal')
         self.ax.axis('off')
         
-        self.ax.text(xlim/2, ylim - 30, 'Collagen Fiber Grid - Three-Phase Mechanical Response', 
+        self.ax.text(xlim/2-180, ylim - 30, 'Collagen Fiber Grid - Three-Phase Mechanical Response', 
                     ha='center', va='top', fontsize=14, fontweight='bold')
     
     def setup_sliders(self):
@@ -609,19 +609,19 @@ class CollagenFiberGridModel:
         # Add legend
         ylim = self.base_ylim * self.zoom_level
         legend_text = 'Blue/Cyan: Elastic | Yellow: Stiffening | Orange: Very Stiff | RED: DAMAGE!'
-        self.ax.text(50, ylim - 40, legend_text, 
+        self.ax.text(-80, ylim - 100, legend_text, 
                     fontsize=10, va='top', bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
         
         # Add info about connection types
         conn_info_text = 'Thick lines = boundary | Dotted = intersections | Medium = fibers'
-        self.ax.text(50, ylim - 65, conn_info_text, 
+        self.ax.text(-80, ylim - 150, conn_info_text, 
                     fontsize=9, va='top', bbox=dict(boxstyle='round', facecolor='lightblue', alpha=0.7))
         
         # Show damage status
         damaged_count = sum(1 for conn in self.connections if conn['max_damage'] > self.damage_threshold)
         if damaged_count > 0:
             damage_text = f'DAMAGED SEGMENTS: {damaged_count}/{len(self.connections)}'
-            self.ax.text(50, ylim - 90, damage_text, 
+            self.ax.text(-80, ylim - 200, damage_text, 
                         fontsize=10, va='top', color='red', fontweight='bold',
                         bbox=dict(boxstyle='round', facecolor='yellow', alpha=0.8))
         
